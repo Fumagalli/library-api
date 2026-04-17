@@ -42,6 +42,13 @@ app.get("/livros", (req, res) => {
 
 app.get("/livros/:id", (req, res) => {
   const index = searchBookById(req.params.id);
+  if (index === -1) {
+    return res.status(404).json({
+      success: false,
+      error: "Livro não encontrado",
+    });
+  }
+
   res.status(200).json({
     success: true,
     data: livros[index],
@@ -64,6 +71,18 @@ app.post("/livros", (req, res) => {
 
 app.put("/livros/:id", (req, res) => {
   const index = searchBookById(req.params.id);
+  if (index === -1) {
+    return res.status(404).json({
+      success: false,
+      error: "Livro não encontrado",
+    });
+  }
+  if (!req.body.titulo) {
+    return res.status(400).json({
+      success: false,
+      error: "Título é obrigatório",
+    });
+  }
   livros[index].titulo = req.body.titulo;
   res.status(200).json({
     success: true,
@@ -73,6 +92,12 @@ app.put("/livros/:id", (req, res) => {
 
 app.delete("/livros/:id", (req, res) => {
   const index = searchBookById(req.params.id);
+  if (index === -1) {
+    return res.status(404).json({
+      success: false,
+      error: "Livro não encontrado",
+    });
+  }
   livros.splice(index, 1);
   res.status(200).json({
     success: true,
