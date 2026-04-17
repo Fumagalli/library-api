@@ -236,6 +236,16 @@ git commit -m "feat(routes): add GET /livros"
 - `.specs/project/STATE.md` - Memória do projeto
 - `.specs/codebase/CONVENTIONS.md` - Padrões de código
 - `.specs/codebase/TESTING.md` - Estratégia de testes
+- `.specs/codebase/SECURITY.md` - Segurança obrigatória
+- `.specs/ATOMIC-COMMITS.md` - Guia de commits atômicos
+
+## 🤖 Quick Reference - Copilot Commands
+
+Para referência rápida em futuras conversas, use:
+
+- `.copilot/pre-commit-checklist.md` - Checklist antes de commitar (copy-paste)
+- `.copilot/red-flags.md` - Red flags para reconhecer scope creep
+- `.copilot/instructions.md` - Instruções principais do workspace
 
 ---
 

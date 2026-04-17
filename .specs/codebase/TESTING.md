@@ -69,6 +69,8 @@ describe("GET /livros/:id", () => {
 
 Testam validação, injeção, e proteção de dados.
 
+**Referência completa:** Veja `./SECURITY.md` para guia detalhado de segurança e padrões.
+
 ```javascript
 // ✅ NoSQL Injection
 describe("Security - NoSQL Injection", () => {

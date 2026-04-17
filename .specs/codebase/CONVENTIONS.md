@@ -223,6 +223,8 @@ docs(readme): update setup instructions
 
 **Cada commit deve ser PEQUENO e INDEPENDENTE.**
 
+Para detalhamento completo, veja: `../ATOMIC-COMMITS.md`
+
 Um commit atômico:
 
 - ✅ Representa UMA mudança lógica completa
