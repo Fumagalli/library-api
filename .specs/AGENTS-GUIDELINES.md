@@ -119,35 +119,88 @@ SPECIFY → DESIGN → TASKS → EXECUTE
 
 ## 🔐 Security by Default (Obrigatório!)
 
-**TODA rota POST/PUT DEVE seguir `.specs/codebase/SECURITY.md`**
+**TODA rota POST/PUT DEVE seguir este checklist:**
 
-**Checklist mínimo para cada rota:**
+### ⚡ Copy-Paste Checklist (todas as rotas POST/PUT)
 
+```markdown
 - [ ] Validação de entrada (Zod schema)?
-- [ ] Sanitização de dados?
+- [ ] Sem injection (ObjectId.isValid se MongoDB)?
 - [ ] Error handling seguro (sem expor detalhes)?
 - [ ] Output protection (retorna apenas campos públicos)?
-- [ ] Teste para injeção/validação?
+- [ ] Testes de segurança (injection, validação)?
+```
 
-**Referência rápida:** `.specs/codebase/SECURITY.md`
+### Vulnerabilidades Críticas a Evitar
+
+1. **NoSQL Injection** - Validar e tipar IDs
+
+   ```javascript
+   // ❌ INSEGURO
+   db.findOne({ _id: req.params.id }); // Pode ser { $gt: "" }
+
+   // ✅ SEGURO
+   const id = z.string().refine(ObjectId.isValid).parse(req.params.id);
+   db.findOne({ _id: new ObjectId(id) });
+   ```
+
+2. **Validação de Entrada** - Zod schema obrigatório
+   ```javascript
+   // ✅ PADRÃO
+   const schema = z.object({
+     title: z.string().min(1).max(200),
+     author: z.string().min(1).max(100),
+     year: z.number().int().min(1000).max(new Date().getFullYear()),
+   });
+   const data = schema.parse(req.body);
+   ```
+
+**Detalhes completos:** `.specs/codebase/SECURITY.md`
 
 ---
 
-## ✅ Checklist Antes de Commitar
+## ✅ Pre-Commit Checklist (copy-paste)
+
+```bash
+# 1. Tests pass?
+npm test
+
+# 2. Lint + format pass?
+npm run lint && npm run format:check
+
+# 3. If all green ✅
+```
+
+**Gates:**
 
 - [ ] Todos os testes passam? `npm test`
 - [ ] Lint passa? `npm run lint`
 - [ ] Code formatado? `npm run format:check`
-- [ ] Commit message clara e rastreável?
-- [ ] Cada linha editada traça ao requisito?
+- [ ] Commit é atômico? (uma mudança lógica, ~50 linhas)
+- [ ] Message segue Conventional Commits? (feat/fix/test)
+- [ ] Cada linha editada rastreia ao requisito?
 - [ ] Nenhuma mudança "enquanto você estava aqui"?
-- [ ] **Commit é atômico?** (uma mudança lógica, ~50 linhas)
 
 ---
 
 ## ⚛️ Atomic Commits (Importante!)
 
 **Cada commit = UMA mudança lógica pequena e independente.**
+
+### ⚡ Copy-Paste Patterns
+
+```bash
+# Padrão: um endpoint = um commit
+git commit -m "feat(routes): add GET /livros"
+git commit -m "feat(routes): add POST /livros"
+git commit -m "feat(routes): add PUT /livros/:id"
+
+# Teste separado = novo commit
+git commit -m "test(routes): add tests for /livros"
+
+# Fix = novo commit
+git commit -m "fix(routes): handle invalid ID"
+```
 
 ### ✅ Bom
 
