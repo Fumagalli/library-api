@@ -21,34 +21,51 @@ function searchBookById(id) {
 }
 
 app.get("/", (req, res) => {
-  res.status(200).send("Curso de Node.js");
+  res.status(200).json({
+    success: true,
+    data: { message: "Curso de Node.js" },
+  });
 });
 
 app.get("/livros", (req, res) => {
-  res.status(200).json(livros);
+  res.status(200).json({
+    success: true,
+    data: livros,
+  });
 });
 
 app.get("/livros/:id", (req, res) => {
   const index = searchBookById(req.params.id);
-  res.status(200).json(livros[index]);
+  res.status(200).json({
+    success: true,
+    data: livros[index],
+  });
 });
 
 app.post("/livros", (req, res) => {
   livros.push(req.body);
-  res.status(201).send("livro cadastrado com sucesso");
+  res.status(201).json({
+    success: true,
+    data: { message: "Livro cadastrado com sucesso" },
+  });
 });
 
 app.put("/livros/:id", (req, res) => {
   const index = searchBookById(req.params.id);
   livros[index].titulo = req.body.titulo;
-  // res.status(201).send(livros);
-  res.status(200).send("livro atualizado com sucesso");
+  res.status(200).json({
+    success: true,
+    data: { message: "Livro atualizado com sucesso" },
+  });
 });
 
 app.delete("/livros/:id", (req, res) => {
   const index = searchBookById(req.params.id);
   livros.splice(index, 1);
-  res.status(200).send("livro removido com sucesso");
+  res.status(200).json({
+    success: true,
+    data: { message: "Livro removido com sucesso" },
+  });
 });
 
 export default app;
