@@ -1,145 +1,79 @@
 # 🗺️ Roadmap - Library API
 
-Detalhamento das fases do projeto com milestones e deliverables.
+**Status:** 🎓 Fase de Aprendizado (seguindo curso Alura)
+
+**Contexto:** Este projeto segue o curso [Node.js: API REST com Express e MongoDB](https://cursos.alura.com.br/course/node-js-api-rest-express-mongodb). O roadmap será refinado conforme o curso evolui.
 
 ---
 
-## Fase 1️⃣: Setup + Roteamento Básico (ATUAL)
+## Fase 1️⃣: Learning Phase (ATUAL)
 
-**Objetivo:** Ambiente funcionando, testes passando, estrutura estabelecida.
+**Objetivo:** Estabelecer estrutura, boas práticas e familiarização com Express + Node.js.
 
-**Segurança:** Headers de segurança com Helmet, estrutura de validação pronta
+**Foco:** Aplicar **Karpathy Guidelines + TLC Spec-Driven + Testes + Atomic Commits**
 
-### Milestones
+### Subindo Nível: Boas Práticas
 
-- [x] Projeto criado
-- [x] ESLint + Prettier configurados
-- [x] **Testes básicos** (Vitest/Jest)
-- [x] Servidor HTTP escutando em porta configurável
-- [x] Rotas GET básicas (`/`, `/livros`, `/autores`)
-- [x] Todos os testes passando
-- [x] Lint e format passando
-- [ ] **Security checklist documentado** (`.specs/codebase/SECURITY.md`)
+Enquanto segue o curso, aplicar desde o início:
 
----
+- ✅ **Code Quality**
+  - ESLint + Prettier configurados
+  - Testes automatizados (Vitest)
+  - Cobertura de testes ≥ 80%
 
-## Fase 2️⃣: Estrutura REST de Livros
+- ✅ **Development Discipline**
+  - Karpathy Guidelines (Think, Simplify, Surgical, Goal-Driven)
+  - TLC Spec-Driven Development (Specify → Design → Tasks → Execute)
+  - Atomic commits (~50 linhas cada, uma lógica por commit)
+  - Testes verificam sucesso antes de considerar pronto
 
-**Objetivo:** CRUD completo para livros com mocking inicial.
+- ✅ **Security from Day 1**
+  - Input validation (Zod schemas)
+  - Sanitização de dados
+  - Error handling seguro (sem expor detalhes)
+  - Output protection (apenas campos públicos)
+  - Testes de segurança (injeção, validation)
 
-**Segurança:** Validação (Zod) + sanitização + error handling + testes de injeção
+- ✅ **Documentation**
+  - Specs em `.specs/` para rastreabilidade
+  - STATE.md para decisões e aprendizados
+  - Code conventions mantidas
 
-### Features
+### Checklist da Fase 1
 
-- [ ] Rota GET `/livros` - listar todos
-- [ ] Rota GET `/livros/:id` - buscar por ID
-- [ ] Rota POST `/livros` - criar novo **com validação**
-- [ ] Rota PUT `/livros/:id` - atualizar **com validação**
-- [ ] Rota DELETE `/livros/:id` - deletar
-- [ ] **Input validation (Zod schema)**
-- [ ] **Sanitização de dados**
-- [ ] Resposta JSON estruturada **apenas campos públicos**
-- [ ] **Error handling seguro** (sem expor detalhes)
-- [ ] **Testes de segurança** (injeção, validation)
-
-### Testes Esperados
-
-- Retorna 200 para requisição válida
-- Retorna 404 para livro não encontrado
-- Retorna 400 para dados inválidos
-- **Rejeita NoSQL injection**
-- **Rejeita campos extras**
-- **Não expõe campos internos**
-- POST cria e retorna ID
-- DELETE remove livro
-
-### ✅ Definition of Done (Fase 2)
-
-- [ ] Todas as 5 rotas CRUD implementadas
-- [ ] 100% dos testes passam (`npm test`)
-- [ ] Nenhuma mudança fora do escopo (Surgical changes)
-- [ ] Validação de input com Zod
-- [ ] Sanitização de dados
-- [ ] Error handling sem expor detalhes internos
-- [ ] Coverage ≥ 80%
-- [ ] Lint passa (`npm run lint`)
-- [ ] Format passa (`npm run format:check`)
-- [ ] Commits são atômicos (~50 linhas cada)
-- [ ] Cada linha editada rastreia ao requisito
+- [x] Projeto e ambiente setup
+- [x] Vitest + ESLint + Prettier
+- [x] Estrutura `.specs/` criada
+- [x] Diretrizes (AGENTS-GUIDELINES.md) documentadas
+- [x] `.copilot/` comandos para agente
+- [ ] Conclusão do curso Alura
 
 ---
 
-## Fase 3️⃣: Estrutura REST de Autores
+## Fase 2️⃣: Post-Course Definition
 
-**Objetivo:** CRUD para autores, espelhando livros.
+**Objetivo:** Revisar aprendizados e definir features reais.
 
-**Segurança:** Mesmos padrões da Fase 2
+**Quando:** Após conclusão do curso Alura
 
-- [ ] Rotas CRUD de autores (GET, POST, PUT, DELETE)
-- [ ] Validação com Zod (similar a livros)
-- [ ] Testes paralelos aos de livros **incluindo segurança**
+### Atividades
 
----
+- [ ] Review: O que foi aprendido?
+- [ ] Definir features reais baseado no curso
+- [ ] Criar roadmap refinado com fases específicas
+- [ ] Começar implementação com boas práticas já internalizadas
 
-## Fase 4️⃣: MongoDB + Persistência + Design Doc
-
-**Objetivo:** Dados saem do mock e vão para DB real.
-
-**Skills:** `security-best-practices` + **`technical-design-doc-creator`** (novo)
-
-**Segurança:** ObjectId para prevenir injeção, prepared queries
-
-- [ ] Criar schema de Livro
-- [ ] Criar schema de Autor
-- [ ] Conectar ao MongoDB
-- [ ] Migrar rotas para usar DB
-- [ ] Testes apontam para BD de teste
-- [ ] **Design doc criado** (`.specs/features/mongodb-integration/design.md`)
-
-**Quando aplicar `technical-design-doc-creator`:**
-
-1. Antes de implementar integração com MongoDB
-2. Documente decisões:
-   - Schema design (normalização vs embedded?)
-   - Relacionamentos (referências vs dados duplicados?)
-   - Índices (quais campos indexar?)
-   - Validação no DB vs aplicação?
-3. Use para rastreabilidade (por quê cada decisão foi feita?)
-
----
-
-## Fase 5️⃣: Buscas Avançadas
-
-**Objetivo:** Querying sofisticado.
-
-- [ ] Buscar por título (texto)
-- [ ] Buscar por autor
-- [ ] Buscar por ano
-- [ ] Filtros combinados
-- [ ] Paginação (limit, skip)
-- [ ] Ordenação (sort)
-
----
-
-## Fase 6️⃣: Validação + Erros
-
-**Objetivo:** Tratamento robusto.
-
-- [ ] Validação com Joi ou Zod
-- [ ] Middleware de erro global
-- [ ] Mensagens de erro padronizadas
-- [ ] HTTP status codes corretos
-- [ ] Logging
+**Referência:** Documentar decisões em `STATE.md` e criar features specs em `.specs/features/`
 
 ---
 
 ## 📊 Status Atual
 
-- **Fase:** 1️⃣ (Setup)
-- **Progresso:** ~40% (ambiente setup, faltam testes)
-- **Bloqueadores:** Nenhum
-- **Próximo:** Implementar testes básicos
+- **Fase:** 1️⃣ Learning
+- **Curso:** [Node.js: API REST com Express e MongoDB](https://cursos.alura.com.br/course/node-js-api-rest-express-mongodb) (em progresso)
+- **Foco:** Boas práticas + fundações
+- **Próximo:** Seguir aulas do curso + aplicar guidelines
 
 ---
 
-**Atualizado:** 2026-04-17
+**Última atualização:** 2026-04-17
