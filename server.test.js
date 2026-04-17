@@ -1,38 +1,21 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import http from "http";
+import app from "./src/app.js";
 
-// Setup do servidor para testes
 let server;
-const PORT = 3001; // Porta diferente para testes
-
-const createTestServer = () => {
-  const rotas = {
-    "/": { message: "Curso de Express API" },
-    "/livros": { message: "Entrei na rota livros", books: [] },
-    "/autores": { message: "Entrei na rota autores", authors: [] },
-  };
-
-  return http.createServer((req, res) => {
-    const rota = rotas[req.url];
-
-    if (rota) {
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(JSON.stringify({ success: true, data: rota }));
-    } else {
-      res.writeHead(404, { "content-type": "application/json" });
-      res.end(JSON.stringify({ success: false, error: "Route not found" }));
-    }
-  });
-};
+const PORT = 3001;
 
 // Helper para fazer requisições HTTP
-const makeRequest = (path) => {
+const makeRequest = (method, path, body = null) => {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: "localhost",
       port: PORT,
       path,
-      method: "GET",
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
     };
 
     const req = http.request(options, (res) => {
@@ -43,69 +26,118 @@ const makeRequest = (path) => {
       res.on("end", () => {
         resolve({
           statusCode: res.statusCode,
-          body: JSON.parse(data),
+          body: data ? JSON.parse(data) : null,
         });
       });
     });
 
     req.on("error", reject);
+    if (body) {
+      req.write(JSON.stringify(body));
+    }
     req.end();
   });
 };
 
-describe("Library API - Basic Routes", () => {
-  beforeAll((done) => {
-    server = createTestServer();
-    server.listen(PORT, done);
+describe("Library API - Endpoints", () => {
+  beforeAll(async () => {
+    await new Promise((resolve) => {
+      server = app.listen(PORT, resolve);
+    });
   });
 
-  afterAll((done) => {
-    server.close(done);
+  afterAll(async () => {
+    await new Promise((resolve) => {
+      server.close(resolve);
+    });
   });
 
   describe("GET /", () => {
     it("should return 200 with welcome message", async () => {
-      const result = await makeRequest("/");
+      const result = await makeRequest("GET", "/");
       expect(result.statusCode).toBe(200);
       expect(result.body.success).toBe(true);
-      expect(result.body.data.message).toBe("Curso de Express API");
+      expect(result.body.data.message).toBe("Curso de Node.js");
     });
   });
 
   describe("GET /livros", () => {
-    it("should return 200 with books route message", async () => {
-      const result = await makeRequest("/livros");
+    it("should return 200 with all books", async () => {
+      const result = await makeRequest("GET", "/livros");
       expect(result.statusCode).toBe(200);
       expect(result.body.success).toBe(true);
-      expect(result.body.data.message).toBe("Entrei na rota livros");
-      expect(Array.isArray(result.body.data.books)).toBe(true);
+      expect(Array.isArray(result.body.data)).toBe(true);
+      expect(result.body.data.length).toBeGreaterThanOrEqual(2);
     });
   });
 
-  describe("GET /autores", () => {
-    it("should return 200 with authors route message", async () => {
-      const result = await makeRequest("/autores");
+  describe("GET /livros/:id", () => {
+    it("should return 200 with book details for valid id", async () => {
+      const result = await makeRequest("GET", "/livros/1");
       expect(result.statusCode).toBe(200);
       expect(result.body.success).toBe(true);
-      expect(result.body.data.message).toBe("Entrei na rota autores");
-      expect(Array.isArray(result.body.data.authors)).toBe(true);
+      expect(result.body.data.id).toBe(1);
+      expect(result.body.data.titulo).toBeDefined();
     });
-  });
 
-  describe("GET /not-found", () => {
-    it("should return 404 for undefined route", async () => {
-      const result = await makeRequest("/not-found");
+    it("should return 404 for invalid id", async () => {
+      const result = await makeRequest("GET", "/livros/999");
       expect(result.statusCode).toBe(404);
       expect(result.body.success).toBe(false);
-      expect(result.body.error).toBe("Route not found");
+      expect(result.body.error).toBe("Livro não encontrado");
     });
   });
 
-  describe("Response Format", () => {
-    it("should always return JSON with success flag", async () => {
-      const result = await makeRequest("/");
-      expect(result.body).toHaveProperty("success");
-      expect(result.body).toHaveProperty("data");
+  describe("POST /livros", () => {
+    it("should create new book successfully", async () => {
+      const newBook = { titulo: "Harry Potter" };
+      const result = await makeRequest("POST", "/livros", newBook);
+      expect(result.statusCode).toBe(201);
+      expect(result.body.success).toBe(true);
+      expect(result.body.data.message).toBe("Livro cadastrado com sucesso");
+    });
+
+    it("should return 400 for invalid book", async () => {
+      const result = await makeRequest("POST", "/livros", {});
+      expect(result.statusCode).toBe(400);
+      expect(result.body.success).toBe(false);
+      expect(result.body.error).toContain("título");
+    });
+  });
+
+  describe("PUT /livros/:id", () => {
+    it("should update book successfully", async () => {
+      const update = { titulo: "O Senhor dos Anéis - Edição Especial" };
+      const result = await makeRequest("PUT", "/livros/1", update);
+      expect(result.statusCode).toBe(200);
+      expect(result.body.success).toBe(true);
+    });
+
+    it("should return 404 for non-existent book", async () => {
+      const update = { titulo: "Novo Título" };
+      const result = await makeRequest("PUT", "/livros/999", update);
+      expect(result.statusCode).toBe(404);
+      expect(result.body.success).toBe(false);
+    });
+
+    it("should return 400 if titulo is missing", async () => {
+      const result = await makeRequest("PUT", "/livros/1", {});
+      expect(result.statusCode).toBe(400);
+      expect(result.body.success).toBe(false);
+    });
+  });
+
+  describe("DELETE /livros/:id", () => {
+    it("should delete book successfully", async () => {
+      const result = await makeRequest("DELETE", "/livros/2");
+      expect(result.statusCode).toBe(200);
+      expect(result.body.success).toBe(true);
+    });
+
+    it("should return 404 for non-existent book", async () => {
+      const result = await makeRequest("DELETE", "/livros/999");
+      expect(result.statusCode).toBe(404);
+      expect(result.body.success).toBe(false);
     });
   });
 });
