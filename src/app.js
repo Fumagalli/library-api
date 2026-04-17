@@ -20,6 +20,12 @@ function searchBookById(id) {
   });
 }
 
+function isValidBook(book) {
+  return (
+    book && typeof book.titulo === "string" && book.titulo.trim().length > 0
+  );
+}
+
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
@@ -43,6 +49,12 @@ app.get("/livros/:id", (req, res) => {
 });
 
 app.post("/livros", (req, res) => {
+  if (!isValidBook(req.body)) {
+    return res.status(400).json({
+      success: false,
+      error: "Livro inválido: título é obrigatório",
+    });
+  }
   livros.push(req.body);
   res.status(201).json({
     success: true,
