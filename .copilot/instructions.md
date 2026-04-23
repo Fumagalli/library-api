@@ -2,6 +2,25 @@
 
 You are working on the **Library API** project.
 
+---
+
+## 🔴 Start Here: Read CLAUDE.md First
+
+**Before doing anything else, read `CLAUDE.md` in the root of the project.**
+
+It contains:
+
+- 6 Sacred Rules (inviolable)
+- Development preferences (4 priorities)
+- Project constraints
+- Security checklist (copy-paste for POST/PUT)
+- Code style guidelines
+- Workflow standard
+
+**This is your source of truth for rules that never change.**
+
+---
+
 ## ⏱️ Quick Start (3 min)
 
 **For your first task:** Read `.specs/QUICK-START.md` - it has everything you need in 3 minutes.
