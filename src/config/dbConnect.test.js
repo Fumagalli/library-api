@@ -41,4 +41,27 @@ describe("dbConnect.js - Environment Variables Validation", () => {
     expect(connectSpy).toHaveBeenCalledWith(testUri);
     connectSpy.mockRestore();
   });
+
+  it("should build mongodb+srv URI from Atlas credentials", async () => {
+    // Simulate local development with Atlas credentials
+    delete process.env.MONGODB_URI;
+    process.env.MONGODB_USER = "testuser";
+    process.env.MONGODB_PASSWORD = "test@password";
+    process.env.MONGODB_CLUSTER = "cluster0.mongodb.net";
+    process.env.MONGODB_DATABASE = "test_db";
+
+    // Mock mongoose.connect to verify correct URI is built
+    const connectSpy = vi.spyOn(mongoose, "connect").mockResolvedValueOnce({
+      on: () => {},
+      once: () => {},
+    });
+
+    const { default: connectDataBase } = await import("./dbConnect.js");
+    await connectDataBase();
+
+    const expectedUri =
+      "mongodb+srv://testuser:test%40password@cluster0.mongodb.net/test_db?appName=FumaloneTestCluster";
+    expect(connectSpy).toHaveBeenCalledWith(expectedUri);
+    connectSpy.mockRestore();
+  });
 });
