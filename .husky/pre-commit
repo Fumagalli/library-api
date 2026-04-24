@@ -1,0 +1,18 @@
+#!/bin/sh
+# Pre-commit hook: enforce code quality gates before commit
+# Ensures: lint, format, tests pass for staged changes
+
+set -e
+
+echo "🔍 Checking staged changes..."
+
+# Run lint-staged (lint + format staged files)
+npx lint-staged
+
+# Run full test suite (ensures no regressions)
+echo ""
+echo "🧪 Running test suite..."
+npm test
+
+echo ""
+echo "✅ All checks passed! Commit is ready."
