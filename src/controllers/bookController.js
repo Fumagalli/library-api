@@ -19,6 +19,7 @@ class BookController {
       logger.error("getAllBooks", error);
       return res.status(500).json({
         success: false,
+        statusCode: 500,
         error: "Ocorreu um problema ao buscar os livros",
       });
     }
@@ -41,6 +42,7 @@ class BookController {
       if (!foundBook) {
         return res.status(404).json({
           success: false,
+          statusCode: 404,
           error: "Livro não encontrado",
         });
       }
@@ -53,6 +55,7 @@ class BookController {
       logger.error("getBookById", error);
       return res.status(500).json({
         success: false,
+        statusCode: 500,
         error: "Ocorreu um problema ao buscar o livro",
       });
     }
@@ -68,6 +71,7 @@ class BookController {
           Object.values(errors.fieldErrors)[0]?.[0] || "Dados inválidos";
         return res.status(400).json({
           success: false,
+          statusCode: 400,
           error: firstError,
         });
       }
@@ -82,6 +86,7 @@ class BookController {
       logger.error("addBook", error);
       return res.status(500).json({
         success: false,
+        statusCode: 500,
         error: "Ocorreu um problema ao cadastrar o livro",
       });
     }
@@ -109,6 +114,7 @@ class BookController {
           "Dados inválidos";
         return res.status(400).json({
           success: false,
+          statusCode: 400,
           error: firstError,
         });
       }
@@ -121,6 +127,7 @@ class BookController {
       if (!foundBook) {
         return res.status(404).json({
           success: false,
+          statusCode: 404,
           error: "Livro não encontrado",
         });
       }
@@ -136,6 +143,7 @@ class BookController {
       logger.error("updateBook", error);
       return res.status(500).json({
         success: false,
+        statusCode: 500,
         error: "Ocorreu um problema ao atualizar o livro",
       });
     }
@@ -158,6 +166,7 @@ class BookController {
       if (!foundBook) {
         return res.status(404).json({
           success: false,
+          statusCode: 404,
           error: "Livro não encontrado",
         });
       }
@@ -172,6 +181,7 @@ class BookController {
       logger.error("deleteBook", error);
       return res.status(500).json({
         success: false,
+        statusCode: 500,
         error: "Ocorreu um problema ao excluir o livro",
       });
     }
