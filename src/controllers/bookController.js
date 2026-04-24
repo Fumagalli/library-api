@@ -15,8 +15,8 @@ class BookController {
         success: true,
         data: bookList,
       });
-    } catch (error) {
-      logger.error("getAllBooks", error);
+    } catch (_error) {
+      logger.error("getAllBooks", _error);
       return res.status(500).json({
         success: false,
         statusCode: 500,
@@ -51,8 +51,8 @@ class BookController {
         success: true,
         data: foundBook,
       });
-    } catch (error) {
-      logger.error("getBookById", error);
+    } catch (_error) {
+      logger.error("getBookById", _error);
       return res.status(500).json({
         success: false,
         statusCode: 500,
@@ -82,8 +82,8 @@ class BookController {
         success: true,
         data: { message: "Livro cadastrado com sucesso", livro: newBook },
       });
-    } catch (error) {
-      logger.error("addBook", error);
+    } catch (_error) {
+      logger.error("addBook", _error);
       return res.status(500).json({
         success: false,
         statusCode: 500,
@@ -139,8 +139,8 @@ class BookController {
           livro: foundBook,
         },
       });
-    } catch (error) {
-      logger.error("updateBook", error);
+    } catch (_error) {
+      logger.error("updateBook", _error);
       return res.status(500).json({
         success: false,
         statusCode: 500,
@@ -177,8 +177,8 @@ class BookController {
           message: "Livro excluído com sucesso",
         },
       });
-    } catch (error) {
-      logger.error("deleteBook", error);
+    } catch (_error) {
+      logger.error("deleteBook", _error);
       return res.status(500).json({
         success: false,
         statusCode: 500,
