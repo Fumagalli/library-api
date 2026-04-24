@@ -2,13 +2,12 @@
 /**
  * Validates test coverage meets project requirements
  * Thresholds:
- *   - Lines: 80%
  *   - Functions: 100%
  *   - Branches: 100%
- *   - Statements: 80%
  */
 
 import fs from "fs";
+import path from "path";
 
 const coverageFile = "coverage/coverage-final.json";
 
@@ -38,14 +37,13 @@ for (const [filePath, fileData] of Object.entries(coverage)) {
     ? Object.values(branchMap).filter((b) => !b.hit)
     : [];
 
-  const shortPath = filePath.replace(process.cwd() + "/", "");
+  const shortPath = filePath.replace(process.cwd() + path.sep, "");
 
   if (uncoveredFunctions.length > 0 || uncoveredBranches.length > 0) {
     failedFiles.push({
       file: shortPath,
       uncoveredFunctions: uncoveredFunctions.length,
       uncoveredBranches: uncoveredBranches.length,
-      failureType: "critical", // Functions and branches must be 100%
     });
   }
 }
