@@ -62,6 +62,18 @@ describe("Library API - Endpoints", () => {
   });
 
   afterAll(async () => {
+    // Safety guard: prevent accidental deletion in non-test databases
+    const isTestEnvironment =
+      process.env.NODE_ENV === "test" ||
+      (process.env.MONGODB_DATABASE &&
+        process.env.MONGODB_DATABASE.toLowerCase().includes("test"));
+
+    if (!isTestEnvironment) {
+      throw new Error(
+        "Safety guard: deleteMany() aborted. Tests must run against a database with 'test' in its name or NODE_ENV=test"
+      );
+    }
+
     await book.deleteMany({});
     await mongoose.disconnect();
     await new Promise((resolve) => {
@@ -96,7 +108,7 @@ describe("Library API - Endpoints", () => {
       expect(result.body.data.title).toBeDefined();
     });
 
-    it("should return 404 for invalid id", async () => {
+    it("should return 404 for non-existent id", async () => {
       const result = await makeRequest(
         "GET",
         "/livros/507f1f77bcf86cd799439999"
