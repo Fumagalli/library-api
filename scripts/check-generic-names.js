@@ -64,6 +64,7 @@ const GENERIC_PATTERNS = {
 const EXCLUDE_PATTERNS = [
   /node_modules/,
   /dist/,
+  /coverage/,
   /.test.js$/,
   /.spec.js$/,
   /mock/i,
