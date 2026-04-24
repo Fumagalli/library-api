@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Lint script: Detect generic variable/function/class names
- * Usage: node scripts/check-generic-names.js [--fix]
+ * Usage: node scripts/check-generic-names.js
  *
  * Helps enforce CLAUDE.md guideline:
  * "Names: Específicos e únicos. Evitar `data`, `handler`, `Manager`."
