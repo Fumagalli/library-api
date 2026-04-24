@@ -246,9 +246,50 @@ git commit -m "type(scope): description"
 
 ---
 
+## 📝 Local PR Development Notes
+
+### `.pr-notes/` Folder (Do Not Commit)
+
+**Purpose:** Track review feedback, design decisions, and validation notes during PR development without cluttering the repository.
+
+**What goes here:**
+
+- `COPILOT_REVIEW_TRACKING.md` - Track Copilot/reviewer feedback and resolutions
+- Development notes on design decisions
+- Test plans and validation checklists
+- Links to related issues or discussions
+
+**Ignored by git:** Added to `.gitignore` - files here stay local.
+
+**How to use:**
+
+1. Create tracking file when PR gets review feedback
+2. Update file as issues are resolved
+3. Reference commit hashes for traceability
+4. Before pushing: verify all items in tracking file are resolved
+5. Delete or archive after merge
+
+**Example workflow:**
+
+```bash
+# During review
+cat .pr-notes/COPILOT_REVIEW_TRACKING.md
+
+# Fix issues and update tracking file
+git add .
+git commit -m "fix(...): resolve item #3 from review"
+
+# Before push - verify all resolved
+cat .pr-notes/COPILOT_REVIEW_TRACKING.md
+```
+
+**Important:** These files are for development reference only. Use git history as the authoritative source.
+
+---
+
 ## 📌 Última Atualização
 
-- **Data:** 2026-04-23
-- **Versão:** 1.0
+- **Data:** 2026-04-24
+- **Versão:** 1.1
 - **Próximo Review:** Quando houver decisão arquitetural nova ou mudança de fase
 - **Responsável:** Mantido pelo usuário
