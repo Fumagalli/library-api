@@ -34,9 +34,9 @@ class BookController {
         });
       }
 
-      const foundedBook = await book.findById(id);
+      const foundBook = await book.findById(id);
 
-      if (!foundedBook) {
+      if (!foundBook) {
         return res.status(404).json({
           success: false,
           error: "Livro não encontrado",
@@ -45,7 +45,7 @@ class BookController {
 
       res.status(200).json({
         success: true,
-        data: foundedBook,
+        data: foundBook,
       });
       // eslint-disable-next-line no-unused-vars
     } catch (error) {
@@ -101,18 +101,21 @@ class BookController {
       if (!validation.success) {
         const errors = validation.error.flatten();
         const firstError =
-          Object.values(errors.fieldErrors)[0]?.[0] || "Dados inválidos";
+          errors.formErrors[0] ||
+          Object.values(errors.fieldErrors)[0]?.[0] ||
+          "Dados inválidos";
         return res.status(400).json({
           success: false,
           error: firstError,
         });
       }
 
-      const foundedBook = await book.findByIdAndUpdate(id, validation.data, {
+      const foundBook = await book.findByIdAndUpdate(id, validation.data, {
         returnDocument: "after",
+        runValidators: true,
       });
 
-      if (!foundedBook) {
+      if (!foundBook) {
         return res.status(404).json({
           success: false,
           error: "Livro não encontrado",
@@ -121,8 +124,10 @@ class BookController {
 
       res.status(200).json({
         success: true,
-        message: "Livro atualizado com sucesso",
-        livro: foundedBook,
+        data: {
+          message: "Livro atualizado com sucesso",
+          livro: foundBook,
+        },
       });
       // eslint-disable-next-line no-unused-vars
     } catch (error) {
@@ -144,9 +149,9 @@ class BookController {
         });
       }
 
-      const foundedBook = await book.findByIdAndDelete(id);
+      const foundBook = await book.findByIdAndDelete(id);
 
-      if (!foundedBook) {
+      if (!foundBook) {
         return res.status(404).json({
           success: false,
           error: "Livro não encontrado",
@@ -155,7 +160,7 @@ class BookController {
 
       res.status(200).json({
         success: true,
-        message: "Livro excluido com sucesso",
+        message: "Livro excluído com sucesso",
       });
       // eslint-disable-next-line no-unused-vars
     } catch (error) {
