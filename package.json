@@ -15,7 +15,8 @@
     "lint:fix": "eslint . --fix",
     "lint:check": "eslint . --format=stylish",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "pr:comments": "node scripts/extract-copilot-comments.js"
   },
   "repository": {
     "type": "git",
