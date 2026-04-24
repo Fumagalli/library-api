@@ -7,6 +7,5 @@ const PORT = 3000;
 const application = await app;
 
 application.listen(PORT, () => {
-  // eslint-disable-next-line no-console
   console.log("Servidor escutando!");
 });

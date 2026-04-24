@@ -45,4 +45,10 @@ export default [
       "import/no-unresolved": "off", // ← Permite vitest/config
     },
   },
+  {
+    files: ["src/utils/logger.js", "src/app.js", "server.js"],
+    rules: {
+      "no-console": "off", // ← Logging infrastructure
+    },
+  },
 ];

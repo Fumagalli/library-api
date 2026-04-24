@@ -5,7 +5,6 @@
 
 const logger = {
   error: (context, error) => {
-    // eslint-disable-next-line no-console
     console.error(`[ERROR] ${context}`, {
       timestamp: new Date().toISOString(),
       message: error.message,
@@ -14,7 +13,6 @@ const logger = {
   },
 
   info: (message, data = {}) => {
-    // eslint-disable-next-line no-console
     console.log(`[INFO] ${message}`, {
       timestamp: new Date().toISOString(),
       ...data,
@@ -22,7 +20,6 @@ const logger = {
   },
 
   warn: (message, data = {}) => {
-    // eslint-disable-next-line no-console
     console.warn(`[WARN] ${message}`, {
       timestamp: new Date().toISOString(),
       ...data,
