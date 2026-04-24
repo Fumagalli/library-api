@@ -164,4 +164,57 @@ describe("Library API - Endpoints", () => {
       expect(result.body.success).toBe(false);
     });
   });
+
+  describe("Security - Input Validation", () => {
+    it("should reject POST with extra fields", async () => {
+      const payload = {
+        title: "Valid Book",
+        _internal: "should_be_rejected",
+        __proto__: "dangerous",
+      };
+      const result = await makeRequest("POST", "/livros", payload);
+      expect(result.statusCode).toBe(400);
+      expect(result.body.success).toBe(false);
+    });
+
+    it("should reject PUT with extra fields", async () => {
+      const payload = {
+        title: "Updated",
+        _id: "different-id",
+        __proto__: "dangerous",
+      };
+      const result = await makeRequest("PUT", `/livros/${testBookId}`, payload);
+      expect(result.statusCode).toBe(400);
+      expect(result.body.success).toBe(false);
+    });
+  });
+
+  describe("Security - NoSQL Injection Prevention", () => {
+    it("should reject POST with injection payload in title", async () => {
+      const payload = {
+        title: { $gt: "" },
+      };
+      const result = await makeRequest("POST", "/livros", payload);
+      expect(result.statusCode).toBe(400);
+      expect(result.body.success).toBe(false);
+    });
+
+    it("should reject PUT with injection payload", async () => {
+      const payload = {
+        title: { $ne: "" },
+      };
+      const result = await makeRequest("PUT", `/livros/${testBookId}`, payload);
+      expect(result.statusCode).toBe(400);
+      expect(result.body.success).toBe(false);
+    });
+  });
+
+  describe("Security - Error Handling", () => {
+    it("should not expose stack trace in error response", async () => {
+      const result = await makeRequest("GET", "/livros/invalid-id");
+      expect(result.statusCode).toBe(404);
+      expect(result.body.error).not.toContain("stack");
+      expect(result.body.error).not.toContain("Error");
+    });
+  });
 });
