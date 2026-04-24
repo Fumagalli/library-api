@@ -127,7 +127,7 @@ Consulte a seção **Diretrizes Obrigatórias** acima para links aos padrões es
 
 ## 📚 Stack
 
-- **Runtime:** Node.js (v18+)
+- **Runtime:** Node.js (>=20.19.0)
 - **Framework:** Express.js
 - **Testing:** Vitest
 - **Linting:** ESLint + Prettier
