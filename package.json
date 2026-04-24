@@ -16,7 +16,14 @@
     "lint:check": "eslint . --format=stylish",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "pr:comments": "node scripts/extract-copilot-comments.js"
+    "pr:comments": "node scripts/extract-copilot-comments.js",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "repository": {
     "type": "git",
@@ -38,6 +45,8 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "prettier": "^3.8.3",
     "vitest": "^4.1.4"
   },
