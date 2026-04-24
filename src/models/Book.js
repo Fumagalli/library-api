@@ -10,6 +10,6 @@ const bookSchema = new mongoose.Schema(
   { versionKey: false }
 );
 
-const book = mongoose.model("livros", bookSchema);
+const book = mongoose.model("Book", bookSchema, "livros");
 
 export default book;
