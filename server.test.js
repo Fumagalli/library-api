@@ -185,22 +185,18 @@ describe("Library API - Endpoints", () => {
 
   describe("Security - Input Validation", () => {
     it("should reject POST with extra fields", async () => {
-      const payload = {
-        title: "Valid Book",
-        _internal: "should_be_rejected",
-        __proto__: "dangerous",
-      };
+      const payload = JSON.parse(
+        '{"title":"Valid Book","_internal":"should_be_rejected","__proto__":"dangerous"}'
+      );
       const result = await makeRequest("POST", "/livros", payload);
       expect(result.statusCode).toBe(400);
       expect(result.body.success).toBe(false);
     });
 
     it("should reject PUT with extra fields", async () => {
-      const payload = {
-        title: "Updated",
-        _id: "different-id",
-        __proto__: "dangerous",
-      };
+      const payload = JSON.parse(
+        '{"title":"Updated","_id":"different-id","__proto__":"dangerous"}'
+      );
       const result = await makeRequest("PUT", `/livros/${testBookId}`, payload);
       expect(result.statusCode).toBe(400);
       expect(result.body.success).toBe(false);
