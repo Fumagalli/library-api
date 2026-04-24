@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import BookController from "./src/controllers/bookController.js";
 import AuthorController from "./src/controllers/authorController.js";
 import book from "./src/models/Book.js";
@@ -103,9 +103,7 @@ describe("BookController - Database Error Handling", () => {
     });
 
     it("should return 500 when book.create() throws error", async () => {
-      book.create.mockRejectedValueOnce(
-        new Error("Duplicate key error")
-      );
+      book.create.mockRejectedValueOnce(new Error("Duplicate key error"));
 
       await BookController.addBook(mockReq, mockRes);
 
@@ -157,9 +155,7 @@ describe("BookController - Database Error Handling", () => {
     });
 
     it("should return 500 when book.findByIdAndUpdate() throws error", async () => {
-      book.findByIdAndUpdate.mockRejectedValueOnce(
-        new Error("Update failed")
-      );
+      book.findByIdAndUpdate.mockRejectedValueOnce(new Error("Update failed"));
 
       await BookController.updateBook(mockReq, mockRes);
 
@@ -195,9 +191,7 @@ describe("BookController - Database Error Handling", () => {
     });
 
     it("should return 500 when book.findByIdAndDelete() throws error", async () => {
-      book.findByIdAndDelete.mockRejectedValueOnce(
-        new Error("Delete failed")
-      );
+      book.findByIdAndDelete.mockRejectedValueOnce(new Error("Delete failed"));
 
       await BookController.deleteBook(mockReq, mockRes);
 
@@ -269,9 +263,7 @@ describe("AuthorController - Database Error Handling", () => {
     });
 
     it("should return 500 when author.findById() throws error", async () => {
-      author.findById.mockRejectedValueOnce(
-        new Error("Database error")
-      );
+      author.findById.mockRejectedValueOnce(new Error("Database error"));
 
       await AuthorController.getAuthorById(mockReq, mockRes);
 
@@ -289,9 +281,7 @@ describe("AuthorController - Database Error Handling", () => {
     });
 
     it("should return 500 when author.create() throws error", async () => {
-      author.create.mockRejectedValueOnce(
-        new Error("Create failed")
-      );
+      author.create.mockRejectedValueOnce(new Error("Create failed"));
 
       await AuthorController.addAuthor(mockReq, mockRes);
 

@@ -67,14 +67,12 @@ class AuthorController {
 
       if (!validation.success) {
         const errors = validation.error.flatten();
-        const firstError =
-          errors.formErrors[0] ||
-          Object.values(errors.fieldErrors)[0]?.[0] ||
-          "Dados inválidos";
+        const error =
+          errors.formErrors?.[0] || Object.values(errors.fieldErrors)[0]?.[0];
         return res.status(400).json({
           success: false,
           statusCode: 400,
-          error: firstError,
+          error,
         });
       }
 
@@ -111,14 +109,12 @@ class AuthorController {
 
       if (!validation.success) {
         const errors = validation.error.flatten();
-        const firstError =
-          errors.formErrors[0] ||
-          Object.values(errors.fieldErrors)[0]?.[0] ||
-          "Dados inválidos";
+        const error =
+          errors.formErrors?.[0] || Object.values(errors.fieldErrors)[0]?.[0];
         return res.status(400).json({
           success: false,
           statusCode: 400,
-          error: firstError,
+          error,
         });
       }
 

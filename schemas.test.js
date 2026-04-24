@@ -112,7 +112,6 @@ describe("Validation Schemas - BookSchema", () => {
       expect(result.success).toBe(false);
     });
 
-
     it("should accept optional publisher", () => {
       const result = bookCreateSchema.safeParse({
         title: "Book",
@@ -268,7 +267,9 @@ describe("Validation Schemas - AuthorSchema", () => {
     });
 
     it("should reject missing name", () => {
-      const result = authorCreateSchema.safeParse({ nationality: "Brasileira" });
+      const result = authorCreateSchema.safeParse({
+        nationality: "Brasileira",
+      });
       expect(result.success).toBe(false);
       expect(result.error.flatten().fieldErrors.name).toBeDefined();
     });
@@ -285,7 +286,6 @@ describe("Validation Schemas - AuthorSchema", () => {
       });
       expect(result.success).toBe(false);
     });
-
 
     it("should accept optional nationality", () => {
       const result = authorCreateSchema.safeParse({

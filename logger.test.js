@@ -162,7 +162,9 @@ describe("Logger Utility", () => {
       logger.info("Timestamp test");
 
       const callArgs = consoleLogSpy.mock.calls[0];
-      expect(callArgs[1].timestamp).toMatch(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+      expect(callArgs[1].timestamp).toMatch(
+        /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/
+      );
     });
   });
 

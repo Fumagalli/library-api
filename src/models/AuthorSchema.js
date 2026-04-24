@@ -1,7 +1,11 @@
 import { z } from "zod";
 import { ObjectId } from "mongodb";
 
-export const authorCreateSchema = z
+function validateObjectId(id) {
+  return ObjectId.isValid(id);
+}
+
+const authorCreateSchema = z
   .object({
     name: z
       .string({ message: "Nome é obrigatório" })
@@ -11,7 +15,7 @@ export const authorCreateSchema = z
   })
   .strict();
 
-export const authorUpdateSchema = z
+const authorUpdateSchema = z
   .object({
     name: z
       .string({ message: "Nome é obrigatório" })
@@ -25,6 +29,4 @@ export const authorUpdateSchema = z
     message: "Pelo menos um campo é obrigatório",
   });
 
-export function validateObjectId(id) {
-  return ObjectId.isValid(id);
-}
+export { authorCreateSchema, authorUpdateSchema, validateObjectId };
