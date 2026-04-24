@@ -231,4 +231,229 @@ describe("Library API - Endpoints", () => {
       expect(result.body.error).not.toContain("Error");
     });
   });
+
+  describe("GET /autores", () => {
+    it("should return 200 with all authors", async () => {
+      const result = await makeRequest("GET", "/autores");
+      expect(result.statusCode).toBe(200);
+      expect(result.body.success).toBe(true);
+      expect(Array.isArray(result.body.data)).toBe(true);
+    });
+  });
+
+  describe("POST /autores", () => {
+    it("should create new author successfully with name only", async () => {
+      const newAuthor = { name: "Machado de Assis" };
+      const result = await makeRequest("POST", "/autores", newAuthor);
+      expect(result.statusCode).toBe(201);
+      expect(result.body.success).toBe(true);
+      expect(result.body.message).toBe("Autor cadastrado com sucesso");
+      expect(result.body.data.name).toBe("Machado de Assis");
+    });
+
+    it("should create new author with name and nationality", async () => {
+      const newAuthor = {
+        name: "Clarice Lispector",
+        nationality: "Brasileira",
+      };
+      const result = await makeRequest("POST", "/autores", newAuthor);
+      expect(result.statusCode).toBe(201);
+      expect(result.body.success).toBe(true);
+      expect(result.body.data.nationality).toBe("Brasileira");
+    });
+
+    it("should return 400 when name is missing", async () => {
+      const result = await makeRequest("POST", "/autores", {});
+      expect(result.statusCode).toBe(400);
+      expect(result.body.success).toBe(false);
+      expect(result.body.error).toContain("Nome");
+    });
+
+    it("should return 400 when name is empty string", async () => {
+      const result = await makeRequest("POST", "/autores", { name: "   " });
+      expect(result.statusCode).toBe(400);
+      expect(result.body.success).toBe(false);
+    });
+
+    it("should reject POST with extra fields", async () => {
+      const payload = JSON.parse(
+        '{"name":"Valid Author","_internal":"should_be_rejected","__proto__":"dangerous"}'
+      );
+      const result = await makeRequest("POST", "/autores", payload);
+      expect(result.statusCode).toBe(400);
+      expect(result.body.success).toBe(false);
+    });
+
+    it("should reject POST with NoSQL injection in name", async () => {
+      const payload = { name: { $gt: "" } };
+      const result = await makeRequest("POST", "/autores", payload);
+      expect(result.statusCode).toBe(400);
+      expect(result.body.success).toBe(false);
+    });
+  });
+
+  describe("GET /autores/:id", () => {
+    let testAuthorId;
+
+    beforeAll(async () => {
+      // Create an author for testing
+      const author = await makeRequest("POST", "/autores", {
+        name: "Paulo Coelho",
+      });
+      testAuthorId = author.body.data._id;
+    });
+
+    it("should return 200 with author details for valid id", async () => {
+      const result = await makeRequest("GET", `/autores/${testAuthorId}`);
+      expect(result.statusCode).toBe(200);
+      expect(result.body.success).toBe(true);
+      expect(result.body.data.name).toBe("Paulo Coelho");
+    });
+
+    it("should return 404 for non-existent id", async () => {
+      const result = await makeRequest(
+        "GET",
+        "/autores/507f1f77bcf86cd799439999"
+      );
+      expect(result.statusCode).toBe(404);
+      expect(result.body.success).toBe(false);
+      expect(result.body.error).toBe("Autor não encontrado");
+    });
+
+    it("should return 400 for invalid id format", async () => {
+      const result = await makeRequest("GET", "/autores/invalid-id");
+      expect(result.statusCode).toBe(400);
+      expect(result.body.success).toBe(false);
+      expect(result.body.error).not.toContain("stack");
+    });
+  });
+
+  describe("PUT /autores/:id", () => {
+    let testAuthorId;
+
+    beforeAll(async () => {
+      const author = await makeRequest("POST", "/autores", {
+        name: "Jorge Amado",
+      });
+      testAuthorId = author.body.data._id;
+    });
+
+    it("should update author name successfully", async () => {
+      const update = { name: "Jorge Amado - Updated" };
+      const result = await makeRequest(
+        "PUT",
+        `/autores/${testAuthorId}`,
+        update
+      );
+      expect(result.statusCode).toBe(200);
+      expect(result.body.success).toBe(true);
+      expect(result.body.message).toBe("Autor atualizado com sucesso");
+    });
+
+    it("should update author nationality successfully", async () => {
+      const update = { nationality: "Brasileira" };
+      const result = await makeRequest(
+        "PUT",
+        `/autores/${testAuthorId}`,
+        update
+      );
+      expect(result.statusCode).toBe(200);
+      expect(result.body.success).toBe(true);
+      expect(result.body.data.nationality).toBe("Brasileira");
+    });
+
+    it("should return 404 for non-existent author", async () => {
+      const update = { name: "Novo Título" };
+      const result = await makeRequest(
+        "PUT",
+        "/autores/507f1f77bcf86cd799439999",
+        update
+      );
+      expect(result.statusCode).toBe(404);
+      expect(result.body.success).toBe(false);
+    });
+
+    it("should return 400 if all fields are missing", async () => {
+      const result = await makeRequest("PUT", `/autores/${testAuthorId}`, {});
+      expect(result.statusCode).toBe(400);
+      expect(result.body.success).toBe(false);
+    });
+
+    it("should return 400 for invalid id format", async () => {
+      const result = await makeRequest("PUT", "/autores/invalid-id", {
+        name: "Test",
+      });
+      expect(result.statusCode).toBe(400);
+      expect(result.body.success).toBe(false);
+    });
+
+    it("should reject PUT with extra fields", async () => {
+      const payload = JSON.parse(
+        '{"name":"Updated","_id":"different-id","__proto__":"dangerous"}'
+      );
+      const result = await makeRequest(
+        "PUT",
+        `/autores/${testAuthorId}`,
+        payload
+      );
+      expect(result.statusCode).toBe(400);
+      expect(result.body.success).toBe(false);
+    });
+
+    it("should reject PUT with NoSQL injection", async () => {
+      const payload = { name: { $ne: "" } };
+      const result = await makeRequest(
+        "PUT",
+        `/autores/${testAuthorId}`,
+        payload
+      );
+      expect(result.statusCode).toBe(400);
+      expect(result.body.success).toBe(false);
+    });
+  });
+
+  describe("DELETE /autores/:id", () => {
+    let testAuthorId;
+    let testAuthorId2;
+
+    beforeAll(async () => {
+      const author1 = await makeRequest("POST", "/autores", {
+        name: "Cecília Meireles",
+      });
+      const author2 = await makeRequest("POST", "/autores", {
+        name: "Aluísio Azevedo",
+      });
+      testAuthorId = author1.body.data._id;
+      testAuthorId2 = author2.body.data._id;
+    });
+
+    it("should delete author successfully", async () => {
+      const result = await makeRequest("DELETE", `/autores/${testAuthorId2}`);
+      expect(result.statusCode).toBe(200);
+      expect(result.body.success).toBe(true);
+      expect(result.body.message).toBe("Autor excluído com sucesso");
+    });
+
+    it("should keep other authors intact after deletion", async () => {
+      const result = await makeRequest("GET", `/autores/${testAuthorId}`);
+      expect(result.statusCode).toBe(200);
+      expect(result.body.data.name).toBe("Cecília Meireles");
+    });
+
+    it("should return 404 for non-existent author", async () => {
+      const result = await makeRequest(
+        "DELETE",
+        "/autores/507f1f77bcf86cd799439999"
+      );
+      expect(result.statusCode).toBe(404);
+      expect(result.body.success).toBe(false);
+    });
+
+    it("should return 400 for invalid id format", async () => {
+      const result = await makeRequest("DELETE", "/autores/invalid-id");
+      expect(result.statusCode).toBe(400);
+      expect(result.body.success).toBe(false);
+      expect(result.body.error).not.toContain("stack");
+    });
+  });
 });
