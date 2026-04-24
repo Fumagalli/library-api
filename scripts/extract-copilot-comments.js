@@ -17,16 +17,16 @@ try {
   const json = execSync(
     `gh api repos/${repo}/pulls/${pr}/comments --paginate`
   ).toString();
-  const data = JSON.parse(json);
+  const reviewComments = JSON.parse(json);
 
-  if (!data || data.length === 0) {
+  if (!reviewComments || reviewComments.length === 0) {
     console.log("⚠️  Nenhum comentário encontrado");
     process.exit(0);
   }
 
   // Agrupar comentários por review_id para identificar a revisão mais recente
   const byReview = {};
-  data.forEach((comment) => {
+  reviewComments.forEach((comment) => {
     if (!byReview[comment.pull_request_review_id]) {
       byReview[comment.pull_request_review_id] = [];
     }
