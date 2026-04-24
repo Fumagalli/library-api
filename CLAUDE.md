@@ -246,6 +246,31 @@ git commit -m "type(scope): description"
 
 ---
 
+## 🧪 Test-Driven Development (TDD)
+
+**Obrigatório:** Testes ANTES de código, não depois.
+
+### Pattern: Red → Green → Refactor
+
+1. **🔴 Red** - Escreva teste que falha (o requisito não foi implementado)
+2. **🟢 Green** - Implemente código mínimo para passar
+3. **🔵 Refactor** - Melhore (testes cobrem, sem risco)
+
+### Checklist por Feature
+
+Antes de implementar, escreva testes para:
+
+- [ ] Happy path (dados válidos)
+- [ ] Input inválido (nulo, empty, tipo errado)
+- [ ] Duplicatas (se aplicável)
+- [ ] Boundary values (min, max)
+- [ ] Whitespace/trim issues
+- [ ] Order of operations (se stateful)
+
+**Referência:** `.specs/TDD-CHECKLIST.md`
+
+---
+
 ## 📝 Local PR Development Notes
 
 ### `.pr-notes/` Folder (Do Not Commit)
