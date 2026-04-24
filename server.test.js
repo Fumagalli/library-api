@@ -8,7 +8,7 @@ import book from "./src/models/Book.js";
 let server;
 let testBookId;
 let testBookId2;
-const PORT = 3001;
+let PORT;
 
 // Helper para fazer requisições HTTP
 const makeRequest = (method, path, body = null) => {
@@ -48,7 +48,10 @@ describe("Library API - Endpoints", () => {
   beforeAll(async () => {
     const appInstance = await app;
     await new Promise((resolve) => {
-      server = appInstance.listen(PORT, resolve);
+      server = appInstance.listen(0, () => {
+        PORT = server.address().port;
+        resolve();
+      });
     });
 
     // Seed test data
