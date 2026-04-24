@@ -108,7 +108,9 @@ class BookController {
         });
       }
 
-      const foundedBook = await book.findByIdAndUpdate(id, validation.data);
+      const foundedBook = await book.findByIdAndUpdate(id, validation.data, {
+        returnDocument: "after",
+      });
 
       if (!foundedBook) {
         return res.status(404).json({
