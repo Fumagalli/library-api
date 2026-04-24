@@ -5,7 +5,8 @@ const routes = (app) => {
   app.route("/").get((req, res) =>
     res.status(200).json({
       success: true,
-      data: { message: "Curso de Node.js" },
+      message: "Curso de Node.js",
+      data: {},
     })
   );
 

@@ -82,7 +82,8 @@ class BookController {
 
       res.status(201).json({
         success: true,
-        data: { message: "Livro cadastrado com sucesso", livro: newBook },
+        message: "Livro cadastrado com sucesso",
+        data: newBook,
       });
     } catch (_error) {
       logger.error("addBook", _error);
@@ -136,10 +137,8 @@ class BookController {
 
       res.status(200).json({
         success: true,
-        data: {
-          message: "Livro atualizado com sucesso",
-          livro: foundBook,
-        },
+        message: "Livro atualizado com sucesso",
+        data: foundBook,
       });
     } catch (_error) {
       logger.error("updateBook", _error);
@@ -175,9 +174,8 @@ class BookController {
 
       res.status(200).json({
         success: true,
-        data: {
-          message: "Livro excluído com sucesso",
-        },
+        message: "Livro excluído com sucesso",
+        data: {},
       });
     } catch (_error) {
       logger.error("deleteBook", _error);
