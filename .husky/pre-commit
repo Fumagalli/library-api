@@ -1,0 +1,23 @@
+#!/bin/sh
+# Pre-commit hook: enforce code quality gates before commit
+# Ensures: lint, format, tests pass for staged changes
+
+set -e
+
+echo "🔍 Checking staged changes..."
+
+# 1. Check for generic names (data, handler, Manager, etc)
+echo "  → Validating semantic naming..."
+npm run check-names
+
+# 2. Run lint-staged (lint + format staged files)
+echo "  → Running ESLint + Prettier on staged files..."
+npx lint-staged
+
+# 3. Run full test suite (ensures no regressions)
+echo ""
+echo "🧪 Running test suite..."
+npm test
+
+echo ""
+echo "✅ All checks passed! Commit is ready."

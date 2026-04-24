@@ -2,6 +2,9 @@
   "name": "library-api",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server.js",
@@ -10,8 +13,18 @@
     "test:coverage": "vitest run --coverage",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "lint:check": "eslint . --format=stylish",
+    "check-names": "node scripts/check-generic-names.js",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "pr:comments": "node scripts/extract-copilot-comments.js",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "repository": {
     "type": "git",
@@ -26,17 +39,24 @@
   },
   "homepage": "https://github.com/Fumagalli/library-api#readme",
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
+    "@eslint/js": "^9.0.0",
     "@types/express": "^5.0.6",
     "@types/node": "^25.6.0",
-    "eslint": "^10.2.0",
+    "eslint": "^9.0.0",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "prettier": "^3.8.3",
     "vitest": "^4.1.4"
   },
   "dependencies": {
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "nodemon": "^3.1.14"
+    "mongodb": "^7.1.1",
+    "mongoose": "^9.4.1",
+    "nodemon": "^3.1.14",
+    "zod": "^4.3.6"
   }
 }
