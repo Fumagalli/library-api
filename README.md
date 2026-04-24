@@ -125,13 +125,39 @@ Consulte a seção **Diretrizes Obrigatórias** acima para links aos padrões es
 
 ---
 
-## 📚 Stack
+## 🛠️ Development Stack
 
-- **Runtime:** Node.js (>=20.19.0)
-- **Framework:** Express.js
-- **Testing:** Vitest
-- **Linting:** ESLint + Prettier
-- **Database:** MongoDB (próximo)
+### Runtime & Framework
+
+- **Node.js:** >= 20.19.0 (with ES modules)
+- **Express.js:** 5.2.1 (REST API framework)
+
+### Quality & Testing
+
+- **Test Runner:** Vitest 4.1.4 with v8 coverage
+- **Coverage Targets:** 100% functions/branches, 80% lines
+- **Linter:** ESLint 9.0.0 (code quality)
+- **Formatter:** Prettier 3.8.3 (code style)
+
+### Git & CI/CD
+
+- **Git Hooks:** Husky 9.1.7 + lint-staged
+  - **Pre-commit:** ESLint + Prettier + Tests + Coverage
+  - **Pre-push:** Coverage validation
+  - **Commit-msg:** Commitlint message validation
+- **CI Pipeline:** GitHub Actions (push/PR validation)
+- **Commit Format:** `type(scope): description` (enforced)
+
+### Data & Validation
+
+- **Database:** MongoDB (via Mongoose 9.4.1)
+- **Validation:** Zod 4.3.6 (schema validation)
+- **Environment:** dotenv 17.4.2
+
+### Development Tools
+
+- **Dev Server:** Nodemon 3.1.14 (auto-reload)
+- **Package Manager:** npm (with CI via `npm ci`)
 
 ---
 
