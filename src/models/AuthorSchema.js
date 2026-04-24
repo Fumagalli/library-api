@@ -25,7 +25,7 @@ const authorUpdateSchema = z
     nationality: z.string().optional(),
   })
   .strict()
-  .refine((data) => Object.keys(data).length > 0, {
+  .refine((payload) => Object.keys(payload).length > 0, {
     message: "Pelo menos um campo é obrigatório",
   });
 
