@@ -23,7 +23,7 @@ export const bookUpdateSchema = z
     pages: z.number().optional(),
   })
   .refine((data) => Object.keys(data).length > 0, {
-    message: "Título é obrigatório",
+    message: "Pelo menos um campo é obrigatório",
   });
 
 export function validateObjectId(id) {
