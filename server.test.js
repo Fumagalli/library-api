@@ -62,23 +62,26 @@ describe("Library API - Endpoints", () => {
   });
 
   afterAll(async () => {
-    // Safety guard: prevent accidental deletion in non-test databases
-    const isTestEnvironment =
-      process.env.NODE_ENV === "test" ||
-      (process.env.MONGODB_DATABASE &&
-        process.env.MONGODB_DATABASE.toLowerCase().includes("test"));
+    try {
+      // Safety guard: prevent accidental deletion in non-test databases
+      const isTestEnvironment =
+        process.env.NODE_ENV === "test" ||
+        (process.env.MONGODB_DATABASE &&
+          process.env.MONGODB_DATABASE.toLowerCase().includes("test"));
 
-    if (!isTestEnvironment) {
-      throw new Error(
-        "Safety guard: deleteMany() aborted. Tests must run against a database with 'test' in its name or NODE_ENV=test"
-      );
+      if (!isTestEnvironment) {
+        throw new Error(
+          "Safety guard: deleteMany() aborted. Tests must run against a database with 'test' in its name or NODE_ENV=test"
+        );
+      }
+
+      await book.deleteMany({});
+    } finally {
+      await mongoose.disconnect();
+      await new Promise((resolve) => {
+        server.close(resolve);
+      });
     }
-
-    await book.deleteMany({});
-    await mongoose.disconnect();
-    await new Promise((resolve) => {
-      server.close(resolve);
-    });
   });
 
   describe("GET /", () => {
@@ -86,7 +89,7 @@ describe("Library API - Endpoints", () => {
       const result = await makeRequest("GET", "/");
       expect(result.statusCode).toBe(200);
       expect(result.body.success).toBe(true);
-      expect(result.body.data.message).toBe("Curso de Node.js");
+      expect(result.body.message).toBe("Curso de Node.js");
     });
   });
 
@@ -125,7 +128,7 @@ describe("Library API - Endpoints", () => {
       const result = await makeRequest("POST", "/livros", newBook);
       expect(result.statusCode).toBe(201);
       expect(result.body.success).toBe(true);
-      expect(result.body.data.message).toBe("Livro cadastrado com sucesso");
+      expect(result.body.message).toBe("Livro cadastrado com sucesso");
     });
 
     it("should return 400 for invalid book", async () => {
@@ -167,7 +170,7 @@ describe("Library API - Endpoints", () => {
       const result = await makeRequest("DELETE", `/livros/${testBookId2}`);
       expect(result.statusCode).toBe(200);
       expect(result.body.success).toBe(true);
-      expect(result.body.data.message).toBe("Livro excluído com sucesso");
+      expect(result.body.message).toBe("Livro excluído com sucesso");
     });
 
     it("should return 404 for non-existent book", async () => {
