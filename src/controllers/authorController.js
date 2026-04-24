@@ -13,7 +13,7 @@ class AuthorController {
 
       res.status(200).json({
         success: true,
-        data: authorList,
+        authors: authorList,
       });
     } catch (_error) {
       logger.error("getAllAuthors", _error);
@@ -49,7 +49,7 @@ class AuthorController {
 
       res.status(200).json({
         success: true,
-        data: foundAuthor,
+        author: foundAuthor,
       });
     } catch (_error) {
       logger.error("getAuthorById", _error);
@@ -63,10 +63,10 @@ class AuthorController {
 
   static async addAuthor(req, res) {
     try {
-      const validation = authorCreateSchema.safeParse(req.body);
+      const parseResult = authorCreateSchema.safeParse(req.body);
 
-      if (!validation.success) {
-        const errors = validation.error.flatten();
+      if (!parseResult.success) {
+        const errors = parseResult.error.flatten();
         const error =
           errors.formErrors?.[0] || Object.values(errors.fieldErrors)[0]?.[0];
         return res.status(400).json({
@@ -76,12 +76,13 @@ class AuthorController {
         });
       }
 
-      const newAuthor = await author.create(validation.data);
+      const { data: authorPayload } = parseResult;
+      const newAuthor = await author.create(authorPayload);
 
       res.status(201).json({
         success: true,
         message: "Autor cadastrado com sucesso",
-        data: newAuthor,
+        author: newAuthor,
       });
     } catch (_error) {
       logger.error("addAuthor", _error);
@@ -105,10 +106,10 @@ class AuthorController {
         });
       }
 
-      const validation = authorUpdateSchema.safeParse(req.body);
+      const parseResult = authorUpdateSchema.safeParse(req.body);
 
-      if (!validation.success) {
-        const errors = validation.error.flatten();
+      if (!parseResult.success) {
+        const errors = parseResult.error.flatten();
         const error =
           errors.formErrors?.[0] || Object.values(errors.fieldErrors)[0]?.[0];
         return res.status(400).json({
@@ -118,7 +119,8 @@ class AuthorController {
         });
       }
 
-      const foundAuthor = await author.findByIdAndUpdate(id, validation.data, {
+      const { data: authorPayload } = parseResult;
+      const foundAuthor = await author.findByIdAndUpdate(id, authorPayload, {
         returnDocument: "after",
         runValidators: true,
       });
@@ -134,7 +136,7 @@ class AuthorController {
       res.status(200).json({
         success: true,
         message: "Autor atualizado com sucesso",
-        data: foundAuthor,
+        author: foundAuthor,
       });
     } catch (_error) {
       logger.error("updateAuthor", _error);
@@ -171,7 +173,7 @@ class AuthorController {
       res.status(200).json({
         success: true,
         message: "Autor excluído com sucesso",
-        data: {},
+        author: {},
       });
     } catch (_error) {
       logger.error("deleteAuthor", _error);

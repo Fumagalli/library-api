@@ -10,7 +10,7 @@ const routes = (app) => {
     res.status(200).json({
       success: true,
       message: "Curso de Node.js",
-      data: {},
+      info: {},
     })
   );
 

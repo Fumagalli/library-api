@@ -13,7 +13,7 @@ class BookController {
 
       res.status(200).json({
         success: true,
-        data: bookList,
+        books: bookList,
       });
     } catch (_error) {
       logger.error("getAllBooks", _error);
@@ -49,7 +49,7 @@ class BookController {
 
       res.status(200).json({
         success: true,
-        data: foundBook,
+        book: foundBook,
       });
     } catch (_error) {
       logger.error("getBookById", _error);
@@ -63,10 +63,10 @@ class BookController {
 
   static async addBook(req, res) {
     try {
-      const validation = bookCreateSchema.safeParse(req.body);
+      const parseResult = bookCreateSchema.safeParse(req.body);
 
-      if (!validation.success) {
-        const errors = validation.error.flatten();
+      if (!parseResult.success) {
+        const errors = parseResult.error.flatten();
         const error =
           errors.formErrors?.[0] || Object.values(errors.fieldErrors)[0]?.[0];
         return res.status(400).json({
@@ -76,12 +76,13 @@ class BookController {
         });
       }
 
-      const newBook = await book.create(validation.data);
+      const { data: bookPayload } = parseResult;
+      const newBook = await book.create(bookPayload);
 
       res.status(201).json({
         success: true,
         message: "Livro cadastrado com sucesso",
-        data: newBook,
+        book: newBook,
       });
     } catch (_error) {
       logger.error("addBook", _error);
@@ -105,10 +106,10 @@ class BookController {
         });
       }
 
-      const validation = bookUpdateSchema.safeParse(req.body);
+      const parseResult = bookUpdateSchema.safeParse(req.body);
 
-      if (!validation.success) {
-        const errors = validation.error.flatten();
+      if (!parseResult.success) {
+        const errors = parseResult.error.flatten();
         const error =
           errors.formErrors?.[0] || Object.values(errors.fieldErrors)[0]?.[0];
         return res.status(400).json({
@@ -118,7 +119,8 @@ class BookController {
         });
       }
 
-      const foundBook = await book.findByIdAndUpdate(id, validation.data, {
+      const { data: bookPayload } = parseResult;
+      const foundBook = await book.findByIdAndUpdate(id, bookPayload, {
         returnDocument: "after",
         runValidators: true,
       });
@@ -134,7 +136,7 @@ class BookController {
       res.status(200).json({
         success: true,
         message: "Livro atualizado com sucesso",
-        data: foundBook,
+        book: foundBook,
       });
     } catch (_error) {
       logger.error("updateBook", _error);
@@ -171,7 +173,7 @@ class BookController {
       res.status(200).json({
         success: true,
         message: "Livro excluído com sucesso",
-        data: {},
+        book: {},
       });
     } catch (_error) {
       logger.error("deleteBook", _error);
