@@ -30,4 +30,10 @@ jobs:
         run: npm run check-names
 
       - name: Run tests with coverage validation
+        env:
+          MONGODB_USER: test_user
+          MONGODB_PASSWORD: test_password
+          MONGODB_CLUSTER: test_cluster.mongodb.net
+          MONGODB_DATABASE: library_test
+          NODE_ENV: test
         run: npm run test:coverage
