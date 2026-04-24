@@ -1,4 +1,5 @@
 import book from "../models/Book.js";
+import logger from "../utils/logger.js";
 import {
   bookCreateSchema,
   bookUpdateSchema,
@@ -14,8 +15,8 @@ class BookController {
         success: true,
         data: bookList,
       });
-      // eslint-disable-next-line no-unused-vars
     } catch (error) {
+      logger.error("getAllBooks", error);
       return res.status(500).json({
         success: false,
         error: "Ocorreu um problema ao buscar os livros",
@@ -47,8 +48,8 @@ class BookController {
         success: true,
         data: foundBook,
       });
-      // eslint-disable-next-line no-unused-vars
     } catch (error) {
+      logger.error("getBookById", error);
       return res.status(500).json({
         success: false,
         error: "Ocorreu um problema ao buscar o livro",
@@ -76,8 +77,8 @@ class BookController {
         success: true,
         data: { message: "Livro cadastrado com sucesso", livro: newBook },
       });
-      // eslint-disable-next-line no-unused-vars
     } catch (error) {
+      logger.error("addBook", error);
       return res.status(500).json({
         success: false,
         error: "Ocorreu um problema ao cadastrar o livro",
@@ -129,8 +130,8 @@ class BookController {
           livro: foundBook,
         },
       });
-      // eslint-disable-next-line no-unused-vars
     } catch (error) {
+      logger.error("updateBook", error);
       return res.status(500).json({
         success: false,
         error: "Ocorreu um problema ao atualizar o livro",
@@ -160,10 +161,12 @@ class BookController {
 
       res.status(200).json({
         success: true,
-        message: "Livro excluído com sucesso",
+        data: {
+          message: "Livro excluído com sucesso",
+        },
       });
-      // eslint-disable-next-line no-unused-vars
     } catch (error) {
+      logger.error("deleteBook", error);
       return res.status(500).json({
         success: false,
         error: "Ocorreu um problema ao excluir o livro",
