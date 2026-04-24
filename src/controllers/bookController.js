@@ -68,7 +68,9 @@ class BookController {
       if (!validation.success) {
         const errors = validation.error.flatten();
         const firstError =
-          Object.values(errors.fieldErrors)[0]?.[0] || "Dados inválidos";
+          errors.formErrors[0] ||
+          Object.values(errors.fieldErrors)[0]?.[0] ||
+          "Dados inválidos";
         return res.status(400).json({
           success: false,
           statusCode: 400,
