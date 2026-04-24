@@ -1,5 +1,50 @@
-node_modules
+# Dependencies
+node_modules/
+
+# Environment variables
 .env
-.pr-notes/
-.vscode/
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage
 coverage/
+.nyc_output/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swa
+*~
+.DS_Store
+.emacs.desktop
+.emacs.desktop.lock
+*.sublime-workspace
+
+# Testing
+.vitest/
+.jest/
+.coverage/
+
+# Project-specific
+.pr-notes/
+.claude/
+.copilot/
+
+# Misc
+.eslintcache
+.prettierignore
+node_modules/.cache
