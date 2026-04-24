@@ -107,6 +107,22 @@ function checkFile(filePath) {
           return;
         }
 
+        // Skip `.data` (property access from Zod validation results)
+        if (
+          rule.message.includes("Generic name 'data'") &&
+          codeOnly[match.index - 1] === "."
+        ) {
+          return;
+        }
+
+        // Skip `{ data:` (destructuring from Zod validation)
+        if (
+          rule.message.includes("Generic name 'data'") &&
+          codeOnly[match.index + 4] === ":"
+        ) {
+          return;
+        }
+
         issues.push({
           file: filePath,
           line: lineNum + 1,

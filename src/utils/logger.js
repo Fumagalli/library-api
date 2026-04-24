@@ -28,17 +28,17 @@ function error(context, err) {
   });
 }
 
-function info(message, data = {}) {
+function info(message, metadata = {}) {
   console.log(`[INFO] ${message}`, {
     timestamp: new Date().toISOString(),
-    ...data,
+    ...metadata,
   });
 }
 
-function warn(message, data = {}) {
+function warn(message, metadata = {}) {
   console.warn(`[WARN] ${message}`, {
     timestamp: new Date().toISOString(),
-    ...data,
+    ...metadata,
   });
 }
 
