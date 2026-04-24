@@ -1,5 +1,6 @@
 import express from "express";
 import books from "./bookRoutes.js";
+import authors from "./authorRoutes.js";
 
 const routes = (app) => {
   app.route("/").get((req, res) =>
@@ -23,6 +24,7 @@ const routes = (app) => {
     next(err);
   });
   app.use(books);
+  app.use(authors);
 };
 
 export default routes;
