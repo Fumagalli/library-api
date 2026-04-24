@@ -4,7 +4,6 @@ import importPlugin from "eslint-plugin-import";
 
 export default [
   js.configs.recommended,
-  prettier,
   importPlugin.flatConfigs.recommended,
   {
     ignores: ["node_modules", "dist"],
@@ -51,4 +50,5 @@ export default [
       "no-console": "off", // ← Logging infrastructure
     },
   },
+  prettier,
 ];
