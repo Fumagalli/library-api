@@ -66,6 +66,12 @@ export default [
     },
   },
   {
+    files: ["scripts/**/*.js"],
+    rules: {
+      "no-console": "off", // CLI scripts need console output
+    },
+  },
+  {
     files: ["vitest.config.js"],
     rules: {
       "import/no-unresolved": "off",

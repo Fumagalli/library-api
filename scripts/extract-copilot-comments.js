@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-/* eslint-disable no-console */
-
 /**
  * Script para extrair e exibir comentários do Copilot de um PR
  * Uso: node scripts/extract-copilot-comments.js [PR_NUMBER]
