@@ -5,17 +5,17 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: ["20"]
-
     steps:
       - uses: actions/checkout@v4
+
+      - name: Read .nvmrc
+        id: nvmrc
+        run: echo "node-version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ steps.nvmrc.outputs.node-version }}
 
       - name: Install dependencies
         run: npm ci
