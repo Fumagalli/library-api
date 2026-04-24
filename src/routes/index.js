@@ -9,7 +9,19 @@ const routes = (app) => {
     })
   );
 
-  app.use(express.json(), books);
+  app.use(express.json());
+  app.use((err, req, res, next) => {
+    if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
+      return res.status(400).json({
+        success: false,
+        statusCode: 400,
+        error: "Invalid JSON body",
+      });
+    }
+
+    next(err);
+  });
+  app.use(books);
 };
 
 export default routes;
