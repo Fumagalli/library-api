@@ -152,6 +152,7 @@ describe("Library API - Endpoints", () => {
       const result = await makeRequest("DELETE", `/livros/${testBookId2}`);
       expect(result.statusCode).toBe(200);
       expect(result.body.success).toBe(true);
+      expect(result.body.data.message).toBe("Livro excluído com sucesso");
     });
 
     it("should return 404 for non-existent book", async () => {
