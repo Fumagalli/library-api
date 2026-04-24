@@ -14,6 +14,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:check": "eslint . --format=stylish",
+    "check-names": "node scripts/check-generic-names.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "pr:comments": "node scripts/extract-copilot-comments.js",
