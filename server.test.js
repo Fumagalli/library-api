@@ -459,6 +459,10 @@ describe("Library API - Endpoints", () => {
 
   describe("Database Error Handling - Books", () => {
     const buildMongoUri = () => {
+      // Use MONGODB_URI if defined (CI with Docker), otherwise build from Atlas credentials
+      if (process.env.MONGODB_URI) {
+        return process.env.MONGODB_URI;
+      }
       const encodedPassword = encodeURIComponent(process.env.MONGODB_PASSWORD);
       return `mongodb+srv://${process.env.MONGODB_USER}:${encodedPassword}@${process.env.MONGODB_CLUSTER}/${process.env.MONGODB_DATABASE}?appName=FumaloneTestCluster`;
     };
