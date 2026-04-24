@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import http from "http";
+import mongoose from "mongoose";
 import "dotenv/config.js";
 import app from "./src/app.js";
 import book from "./src/models/Book.js";
@@ -59,6 +60,7 @@ describe("Library API - Endpoints", () => {
 
   afterAll(async () => {
     await book.deleteMany({});
+    await mongoose.disconnect();
     await new Promise((resolve) => {
       server.close(resolve);
     });
