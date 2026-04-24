@@ -210,9 +210,9 @@ describe("Library API - Endpoints", () => {
   });
 
   describe("Security - Error Handling", () => {
-    it("should not expose stack trace in error response", async () => {
+    it("should return 400 for invalid id format and not expose stack trace", async () => {
       const result = await makeRequest("GET", "/livros/invalid-id");
-      expect(result.statusCode).toBe(404);
+      expect(result.statusCode).toBe(400);
       expect(result.body.error).not.toContain("stack");
       expect(result.body.error).not.toContain("Error");
     });

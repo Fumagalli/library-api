@@ -29,9 +29,10 @@ class BookController {
       const { id } = req.params;
 
       if (!validateObjectId(id)) {
-        return res.status(404).json({
+        return res.status(400).json({
           success: false,
-          error: "Livro não encontrado",
+          statusCode: 400,
+          error: "ID do livro inválido",
         });
       }
 
@@ -91,9 +92,10 @@ class BookController {
       const { id } = req.params;
 
       if (!validateObjectId(id)) {
-        return res.status(404).json({
+        return res.status(400).json({
           success: false,
-          error: "Livro não encontrado",
+          statusCode: 400,
+          error: "ID do livro inválido",
         });
       }
 
@@ -144,9 +146,10 @@ class BookController {
       const { id } = req.params;
 
       if (!validateObjectId(id)) {
-        return res.status(404).json({
+        return res.status(400).json({
           success: false,
-          error: "Livro não encontrado",
+          statusCode: 400,
+          error: "ID do livro inválido",
         });
       }
 
