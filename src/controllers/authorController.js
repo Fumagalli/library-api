@@ -13,7 +13,7 @@ class AuthorController {
 
       res.status(200).json({
         success: true,
-        authors: authorList,
+        data: authorList,
       });
     } catch (_error) {
       logger.error("getAllAuthors", _error);
@@ -49,7 +49,7 @@ class AuthorController {
 
       res.status(200).json({
         success: true,
-        author: foundAuthor,
+        data: foundAuthor,
       });
     } catch (_error) {
       logger.error("getAuthorById", _error);
@@ -81,8 +81,8 @@ class AuthorController {
 
       res.status(201).json({
         success: true,
+        data: newAuthor,
         message: "Autor cadastrado com sucesso",
-        author: newAuthor,
       });
     } catch (_error) {
       logger.error("addAuthor", _error);
@@ -135,8 +135,8 @@ class AuthorController {
 
       res.status(200).json({
         success: true,
+        data: foundAuthor,
         message: "Autor atualizado com sucesso",
-        author: foundAuthor,
       });
     } catch (_error) {
       logger.error("updateAuthor", _error);
@@ -172,8 +172,8 @@ class AuthorController {
 
       res.status(200).json({
         success: true,
+        data: {},
         message: "Autor excluído com sucesso",
-        author: {},
       });
     } catch (_error) {
       logger.error("deleteAuthor", _error);

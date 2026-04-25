@@ -13,7 +13,7 @@ class BookController {
 
       res.status(200).json({
         success: true,
-        books: bookList,
+        data: bookList,
       });
     } catch (_error) {
       logger.error("getAllBooks", _error);
@@ -49,7 +49,7 @@ class BookController {
 
       res.status(200).json({
         success: true,
-        book: foundBook,
+        data: foundBook,
       });
     } catch (_error) {
       logger.error("getBookById", _error);
@@ -81,8 +81,8 @@ class BookController {
 
       res.status(201).json({
         success: true,
+        data: newBook,
         message: "Livro cadastrado com sucesso",
-        book: newBook,
       });
     } catch (_error) {
       logger.error("addBook", _error);
@@ -135,8 +135,8 @@ class BookController {
 
       res.status(200).json({
         success: true,
+        data: foundBook,
         message: "Livro atualizado com sucesso",
-        book: foundBook,
       });
     } catch (_error) {
       logger.error("updateBook", _error);
@@ -172,8 +172,8 @@ class BookController {
 
       res.status(200).json({
         success: true,
+        data: {},
         message: "Livro excluído com sucesso",
-        book: {},
       });
     } catch (_error) {
       logger.error("deleteBook", _error);

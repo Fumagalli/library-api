@@ -98,8 +98,8 @@ describe("Library API - Endpoints", () => {
       const result = await makeRequest("GET", "/livros");
       expect(result.statusCode).toBe(200);
       expect(result.body.success).toBe(true);
-      expect(Array.isArray(result.body.books)).toBe(true);
-      expect(result.body.books.length).toBeGreaterThanOrEqual(2);
+      expect(Array.isArray(result.body.data)).toBe(true);
+      expect(result.body.data.length).toBeGreaterThanOrEqual(2);
     });
   });
 
@@ -108,7 +108,7 @@ describe("Library API - Endpoints", () => {
       const result = await makeRequest("GET", `/livros/${testBookId}`);
       expect(result.statusCode).toBe(200);
       expect(result.body.success).toBe(true);
-      expect(result.body.book.title).toBeDefined();
+      expect(result.body.data.title).toBeDefined();
     });
 
     it("should return 404 for non-existent id", async () => {
@@ -129,6 +129,7 @@ describe("Library API - Endpoints", () => {
       expect(result.statusCode).toBe(201);
       expect(result.body.success).toBe(true);
       expect(result.body.message).toBe("Livro cadastrado com sucesso");
+      expect(result.body.data).toBeDefined();
     });
 
     it("should return 400 for invalid book", async () => {
@@ -237,7 +238,7 @@ describe("Library API - Endpoints", () => {
       const result = await makeRequest("GET", "/autores");
       expect(result.statusCode).toBe(200);
       expect(result.body.success).toBe(true);
-      expect(Array.isArray(result.body.authors)).toBe(true);
+      expect(Array.isArray(result.body.data)).toBe(true);
     });
   });
 
@@ -248,7 +249,7 @@ describe("Library API - Endpoints", () => {
       expect(result.statusCode).toBe(201);
       expect(result.body.success).toBe(true);
       expect(result.body.message).toBe("Autor cadastrado com sucesso");
-      expect(result.body.author.name).toBe("Machado de Assis");
+      expect(result.body.data.name).toBe("Machado de Assis");
     });
 
     it("should create new author with name and nationality", async () => {
@@ -259,7 +260,7 @@ describe("Library API - Endpoints", () => {
       const result = await makeRequest("POST", "/autores", newAuthor);
       expect(result.statusCode).toBe(201);
       expect(result.body.success).toBe(true);
-      expect(result.body.author.nationality).toBe("Brasileira");
+      expect(result.body.data.nationality).toBe("Brasileira");
     });
 
     it("should return 400 when name is missing", async () => {
@@ -296,18 +297,17 @@ describe("Library API - Endpoints", () => {
     let testAuthorId;
 
     beforeAll(async () => {
-      // Create an author for testing
       const author = await makeRequest("POST", "/autores", {
         name: "Paulo Coelho",
       });
-      testAuthorId = author.body.author._id;
+      testAuthorId = author.body.data._id;
     });
 
     it("should return 200 with author details for valid id", async () => {
       const result = await makeRequest("GET", `/autores/${testAuthorId}`);
       expect(result.statusCode).toBe(200);
       expect(result.body.success).toBe(true);
-      expect(result.body.author.name).toBe("Paulo Coelho");
+      expect(result.body.data.name).toBe("Paulo Coelho");
     });
 
     it("should return 404 for non-existent id", async () => {
@@ -335,7 +335,7 @@ describe("Library API - Endpoints", () => {
       const author = await makeRequest("POST", "/autores", {
         name: "Jorge Amado",
       });
-      testAuthorId = author.body.author._id;
+      testAuthorId = author.body.data._id;
     });
 
     it("should update author name successfully", async () => {
@@ -359,7 +359,7 @@ describe("Library API - Endpoints", () => {
       );
       expect(result.statusCode).toBe(200);
       expect(result.body.success).toBe(true);
-      expect(result.body.author.nationality).toBe("Brasileira");
+      expect(result.body.data.nationality).toBe("Brasileira");
     });
 
     it("should return 404 for non-existent author", async () => {
@@ -423,8 +423,8 @@ describe("Library API - Endpoints", () => {
       const author2 = await makeRequest("POST", "/autores", {
         name: "Aluísio Azevedo",
       });
-      testAuthorId = author1.body.author._id;
-      testAuthorId2 = author2.body.author._id;
+      testAuthorId = author1.body.data._id;
+      testAuthorId2 = author2.body.data._id;
     });
 
     it("should delete author successfully", async () => {
@@ -437,7 +437,7 @@ describe("Library API - Endpoints", () => {
     it("should keep other authors intact after deletion", async () => {
       const result = await makeRequest("GET", `/autores/${testAuthorId}`);
       expect(result.statusCode).toBe(200);
-      expect(result.body.author.name).toBe("Cecília Meireles");
+      expect(result.body.data.name).toBe("Cecília Meireles");
     });
 
     it("should return 404 for non-existent author", async () => {
