@@ -64,6 +64,7 @@ const GENERIC_PATTERNS = {
 const EXCLUDE_PATTERNS = [
   /node_modules/,
   /dist/,
+  /coverage/,
   /.test.js$/,
   /.spec.js$/,
   /mock/i,
@@ -103,6 +104,22 @@ function checkFile(filePath) {
         if (
           codeOnly[match.index - 1] === '"' ||
           codeOnly[match.index - 1] === "'"
+        ) {
+          return;
+        }
+
+        // Skip `.data` (property access from Zod validation results)
+        if (
+          rule.message.includes("Generic name 'data'") &&
+          codeOnly[match.index - 1] === "."
+        ) {
+          return;
+        }
+
+        // Skip `{ data:` (destructuring from Zod validation)
+        if (
+          rule.message.includes("Generic name 'data'") &&
+          codeOnly[match.index + 4] === ":"
         ) {
           return;
         }

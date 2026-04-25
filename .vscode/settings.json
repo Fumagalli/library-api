@@ -7,5 +7,12 @@
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
+  },
+  "chat.tools.terminal.autoApprove": {
+    "true": true,
+    "/^npm run 2>&1 \\| grep -A 50 \"available\"$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
   }
 }

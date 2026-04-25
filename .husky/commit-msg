@@ -1,0 +1,5 @@
+#!/bin/sh
+# Commit message validation hook
+# Ensures: type(scope): description format and length constraints
+
+npx --no-install commitlint --edit "$1"

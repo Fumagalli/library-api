@@ -1,0 +1,14 @@
+#!/bin/sh
+# Pre-push hook: validate coverage before push
+# Ensures: coverage thresholds met (100% functions/branches, 80% lines)
+
+set -e
+
+echo "🚀 Running pre-push validation..."
+echo ""
+
+# Run coverage validation
+npm run test:coverage
+
+echo ""
+echo "✅ All checks passed! Ready to push."

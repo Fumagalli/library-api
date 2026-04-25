@@ -1,7 +1,11 @@
 import { z } from "zod";
 import { ObjectId } from "mongodb";
 
-export const bookCreateSchema = z
+function validateObjectId(id) {
+  return ObjectId.isValid(id);
+}
+
+const bookCreateSchema = z
   .object({
     title: z
       .string({ message: "Título é obrigatório" })
@@ -13,7 +17,7 @@ export const bookCreateSchema = z
   })
   .strict();
 
-export const bookUpdateSchema = z
+const bookUpdateSchema = z
   .object({
     title: z
       .string({ message: "Título é obrigatório" })
@@ -25,10 +29,8 @@ export const bookUpdateSchema = z
     pages: z.number().optional(),
   })
   .strict()
-  .refine((data) => Object.keys(data).length > 0, {
+  .refine((payload) => Object.keys(payload).length > 0, {
     message: "Pelo menos um campo é obrigatório",
   });
 
-export function validateObjectId(id) {
-  return ObjectId.isValid(id);
-}
+export { bookCreateSchema, bookUpdateSchema, validateObjectId };

@@ -1,31 +1,31 @@
-import book from "../models/Book.js";
+import author from "../models/Author.js";
 import logger from "../utils/logger.js";
 import {
-  bookCreateSchema,
-  bookUpdateSchema,
+  authorCreateSchema,
+  authorUpdateSchema,
   validateObjectId,
-} from "../models/BookSchema.js";
+} from "../models/AuthorSchema.js";
 
-class BookController {
-  static async getAllBooks(req, res) {
+class AuthorController {
+  static async getAllAuthors(req, res) {
     try {
-      const bookList = await book.find({});
+      const authorList = await author.find({});
 
       res.status(200).json({
         success: true,
-        data: bookList,
+        data: authorList,
       });
     } catch (_error) {
-      logger.error("getAllBooks", _error);
+      logger.error("getAllAuthors", _error);
       return res.status(500).json({
         success: false,
         statusCode: 500,
-        error: "Ocorreu um problema ao buscar os livros",
+        error: "Ocorreu um problema ao buscar os autores",
       });
     }
   }
 
-  static async getBookById(req, res) {
+  static async getAuthorById(req, res) {
     try {
       const { id } = req.params;
 
@@ -33,37 +33,37 @@ class BookController {
         return res.status(400).json({
           success: false,
           statusCode: 400,
-          error: "ID do livro inválido",
+          error: "ID do autor inválido",
         });
       }
 
-      const foundBook = await book.findById(id);
+      const foundAuthor = await author.findById(id);
 
-      if (!foundBook) {
+      if (!foundAuthor) {
         return res.status(404).json({
           success: false,
           statusCode: 404,
-          error: "Livro não encontrado",
+          error: "Autor não encontrado",
         });
       }
 
       res.status(200).json({
         success: true,
-        data: foundBook,
+        data: foundAuthor,
       });
     } catch (_error) {
-      logger.error("getBookById", _error);
+      logger.error("getAuthorById", _error);
       return res.status(500).json({
         success: false,
         statusCode: 500,
-        error: "Ocorreu um problema ao buscar o livro",
+        error: "Ocorreu um problema ao buscar o autor",
       });
     }
   }
 
-  static async addBook(req, res) {
+  static async addAuthor(req, res) {
     try {
-      const parseResult = bookCreateSchema.safeParse(req.body);
+      const parseResult = authorCreateSchema.safeParse(req.body);
 
       if (!parseResult.success) {
         const errors = parseResult.error.flatten();
@@ -76,25 +76,25 @@ class BookController {
         });
       }
 
-      const { data: bookPayload } = parseResult;
-      const newBook = await book.create(bookPayload);
+      const { data: authorPayload } = parseResult;
+      const newAuthor = await author.create(authorPayload);
 
       res.status(201).json({
         success: true,
-        data: newBook,
-        message: "Livro cadastrado com sucesso",
+        data: newAuthor,
+        message: "Autor cadastrado com sucesso",
       });
     } catch (_error) {
-      logger.error("addBook", _error);
+      logger.error("addAuthor", _error);
       return res.status(500).json({
         success: false,
         statusCode: 500,
-        error: "Ocorreu um problema ao cadastrar o livro",
+        error: "Ocorreu um problema ao cadastrar o autor",
       });
     }
   }
 
-  static async updateBook(req, res) {
+  static async updateAuthor(req, res) {
     try {
       const { id } = req.params;
 
@@ -102,11 +102,11 @@ class BookController {
         return res.status(400).json({
           success: false,
           statusCode: 400,
-          error: "ID do livro inválido",
+          error: "ID do autor inválido",
         });
       }
 
-      const parseResult = bookUpdateSchema.safeParse(req.body);
+      const parseResult = authorUpdateSchema.safeParse(req.body);
 
       if (!parseResult.success) {
         const errors = parseResult.error.flatten();
@@ -119,36 +119,36 @@ class BookController {
         });
       }
 
-      const { data: bookPayload } = parseResult;
-      const foundBook = await book.findByIdAndUpdate(id, bookPayload, {
+      const { data: authorPayload } = parseResult;
+      const foundAuthor = await author.findByIdAndUpdate(id, authorPayload, {
         returnDocument: "after",
         runValidators: true,
       });
 
-      if (!foundBook) {
+      if (!foundAuthor) {
         return res.status(404).json({
           success: false,
           statusCode: 404,
-          error: "Livro não encontrado",
+          error: "Autor não encontrado",
         });
       }
 
       res.status(200).json({
         success: true,
-        data: foundBook,
-        message: "Livro atualizado com sucesso",
+        data: foundAuthor,
+        message: "Autor atualizado com sucesso",
       });
     } catch (_error) {
-      logger.error("updateBook", _error);
+      logger.error("updateAuthor", _error);
       return res.status(500).json({
         success: false,
         statusCode: 500,
-        error: "Ocorreu um problema ao atualizar o livro",
+        error: "Ocorreu um problema ao atualizar o autor",
       });
     }
   }
 
-  static async deleteBook(req, res) {
+  static async deleteAuthor(req, res) {
     try {
       const { id } = req.params;
 
@@ -156,34 +156,34 @@ class BookController {
         return res.status(400).json({
           success: false,
           statusCode: 400,
-          error: "ID do livro inválido",
+          error: "ID do autor inválido",
         });
       }
 
-      const foundBook = await book.findByIdAndDelete(id);
+      const foundAuthor = await author.findByIdAndDelete(id);
 
-      if (!foundBook) {
+      if (!foundAuthor) {
         return res.status(404).json({
           success: false,
           statusCode: 404,
-          error: "Livro não encontrado",
+          error: "Autor não encontrado",
         });
       }
 
       res.status(200).json({
         success: true,
         data: {},
-        message: "Livro excluído com sucesso",
+        message: "Autor excluído com sucesso",
       });
     } catch (_error) {
-      logger.error("deleteBook", _error);
+      logger.error("deleteAuthor", _error);
       return res.status(500).json({
         success: false,
         statusCode: 500,
-        error: "Ocorreu um problema ao excluir o livro",
+        error: "Ocorreu um problema ao excluir o autor",
       });
     }
   }
 }
 
-export default BookController;
+export default AuthorController;

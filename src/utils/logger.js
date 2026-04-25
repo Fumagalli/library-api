@@ -3,47 +3,43 @@
  * Logs errors server-side without exposing details to clients
  */
 
-const logger = {
-  error: (context, error) => {
-    // Normalize any thrown value (Error, string, null, etc) to a safe log format
-    const normalizedMessage =
-      error instanceof Error
-        ? error.message
-        : error == null
-          ? String(error)
-          : typeof error === "object" && typeof error.message === "string"
-            ? error.message
-            : String(error);
+function error(context, err) {
+  // Normalize any thrown value (Error, string, null, etc) to a safe log format
+  const normalizedMessage =
+    err instanceof Error
+      ? err.message
+      : err == null
+        ? String(err)
+        : typeof err === "object" && typeof err.message === "string"
+          ? err.message
+          : String(err);
 
-    const normalizedStack =
-      error instanceof Error
-        ? error.stack
-        : error != null &&
-            typeof error === "object" &&
-            typeof error.stack === "string"
-          ? error.stack
-          : undefined;
+  const normalizedStack =
+    err instanceof Error
+      ? err.stack
+      : err != null && typeof err === "object" && typeof err.stack === "string"
+        ? err.stack
+        : undefined;
 
-    console.error(`[ERROR] ${context}`, {
-      timestamp: new Date().toISOString(),
-      message: normalizedMessage,
-      stack: normalizedStack,
-    });
-  },
+  console.error(`[ERROR] ${context}`, {
+    timestamp: new Date().toISOString(),
+    message: normalizedMessage,
+    stack: normalizedStack,
+  });
+}
 
-  info: (message, data = {}) => {
-    console.log(`[INFO] ${message}`, {
-      timestamp: new Date().toISOString(),
-      ...data,
-    });
-  },
+function info(message, metadata = {}) {
+  console.log(`[INFO] ${message}`, {
+    timestamp: new Date().toISOString(),
+    ...metadata,
+  });
+}
 
-  warn: (message, data = {}) => {
-    console.warn(`[WARN] ${message}`, {
-      timestamp: new Date().toISOString(),
-      ...data,
-    });
-  },
-};
+function warn(message, metadata = {}) {
+  console.warn(`[WARN] ${message}`, {
+    timestamp: new Date().toISOString(),
+    ...metadata,
+  });
+}
 
-export default logger;
+export default { error, info, warn };
